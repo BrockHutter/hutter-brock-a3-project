@@ -1,11 +1,25 @@
 ﻿using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace MohawkGame2D
 {
     public class Game
     {
         float x = 0;
+        float y = 0;
+        Vector2 position;
+        Vector2 velocity;
+        Vector2 gravity = new Vector2(0, +10);
+
+        public void Setup()
+        {
+            Window.SetTitle("Ascension");
+            Window.SetSize(400, 600);
+            position = new(Window.Width / 2, 100);
+        }
+
+
         void drawPogoStick()
         {
             Draw.FillColor = Color.Black;
@@ -16,15 +30,16 @@ namespace MohawkGame2D
 
         }
 
-        public void Setup()
+        void drawPlatform()
         {
-            float x = 0;
-            Window.SetSize(400, 600);
+            Draw.FillColor = Color.Green;
+            Draw.Rectangle(position, 100, 30);
         }
         public void Update()
         {
             Window.ClearBackground(Color.White);
             drawPogoStick();
+            ApplyGravity();
             if (Input.IsKeyboardKeyDown(KeyboardInput.Left))
             {
                 x -= 5;
@@ -34,6 +49,12 @@ namespace MohawkGame2D
                 x += 5;
             }
             else;
+            drawPlatform();
+        }
+        void ApplyGravity()
+        {
+            Vector2 gravityForce = gravity * Time.DeltaTime;
+            velocity += gravityForce;
         }
     }
 
